@@ -1,14 +1,21 @@
-import { Component, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { MatExpansionModule } from '@angular/material/expansion';
+import { PostsService } from "../posts.service";
+import { MatAnchor } from "@angular/material/button";
 
 @Component({
     selector: 'app-post-list',
-    imports: [MatExpansionModule],
+    imports: [MatExpansionModule, MatAnchor],
     templateUrl: './post-list.component.html',
     styleUrl: './post-list.component.css'
 })
-export class PostListComponent {
+export class PostListComponent implements OnInit {
 
-    @Input() posts: { title: string, content: string }[] = [];
+    posts!: ReturnType<PostsService['getPosts']>;
 
+    constructor(public postsService: PostsService) {}
+
+    ngOnInit() {
+        this.posts = this.postsService.getPosts();
+    }
 }

@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms'; 
 import { HeaderComponent } from './header/header/header.component'
 import { PostListComponent } from './posts/post-list/post-list.component'
-
+import { Post } from './posts/post.model';
 @Component({
   imports: [
     RouterOutlet, 
@@ -26,8 +26,5 @@ import { PostListComponent } from './posts/post-list/post-list.component'
   templateUrl: './app.html',
 })
 export class App {
-  storedPosts = signal<{title: string, content: string}[]>([]);
-  onPostAdded(post: {title: string, content: string}) {
-    this.storedPosts.update(posts => [...posts, post]);
-}
+
 }
