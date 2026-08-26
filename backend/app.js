@@ -30,23 +30,43 @@ app.post("/api/posts", async (req, res, next) => {
     });
 });
 
-app.get('/api/posts', (req, res, next) => {
-    const posts = [
-        {
-            id: 'fadf12421l',
-            title: 'First server-side post',
-            content: 'This is comming from the server'
-        },
-        {
-            id: 'ksajflaj132',
-            title: 'Second server-side post',
-            content: 'This is comming from the server!'
-        } 
-    ];
-    res.status(200).json({
+app.get('/api/posts', async (req, res, next) => {
+
+    try{
+        const posts = await Post.findAll();
+
+        console.log('POSTS:', posts);
+
+        res.status(200).json({
         message: 'Posts fetched succesfully!',
         posts: posts
     });
+    } catch (error){
+        next(error);
+    }    
+});
+
+app.delete('/api/posts/:id', async (req, res, next) => {
+
+    try{
+        const deleted = await Post.destroy({
+            where: {
+                id: req.params.id
+            }
+        });
+
+        if (deleted === 0) {
+            return res.status(404).json({
+                message: 'Post not found'
+            });
+        }        
+
+        res.status(200).json({
+        message: 'Posts deleted succesfully!',        
+    });
+    } catch (error){
+        next(error);
+    }    
 });
 
 sequelize.sync({ alter: true })

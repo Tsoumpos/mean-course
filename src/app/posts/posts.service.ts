@@ -35,4 +35,17 @@ export class PostsService {
         });
         
     }
+
+    deletePost(id: string | null) {
+        if (id !== null){
+            this.http.delete<{message: string}>('http://localhost:3000/api/posts/' + id).subscribe((responseData => {
+                console.log(responseData.message);
+    
+                this.posts.update(posts => posts.filter(post => post.id !== id));
+                this.postsUpdated.next([...this.posts()]);
+            }))
+        } else {
+        
+        }
+    }
 }
