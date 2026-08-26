@@ -1,21 +1,28 @@
-import { Component, OnInit } from "@angular/core";
-import { MatExpansionModule } from '@angular/material/expansion';
-import { PostsService } from "../posts.service";
-import { MatAnchor } from "@angular/material/button";
-
+import { Component, OnInit } from '@angular/core';
+import { PostsService } from '../posts.service';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 @Component({
-    selector: 'app-post-list',
-    imports: [MatExpansionModule, MatAnchor],
-    templateUrl: './post-list.component.html',
-    styleUrl: './post-list.component.css'
+  selector: 'app-post-list',
+  templateUrl: './post-list.component.html',
+  styleUrls: ['./post-list.component.css'],
+    imports: [
+    CommonModule,
+    MatAccordion,
+    MatExpansionModule,
+    MatButtonModule
+  ]
 })
 export class PostListComponent implements OnInit {
 
-    posts!: ReturnType<PostsService['getPosts']>;
+  get posts() {
+    return this.postsService.posts$;  // ✅ Getter instead of property
+  }
 
-    constructor(public postsService: PostsService) {}
+  constructor(private postsService: PostsService) {}
 
-    ngOnInit() {
-        this.posts = this.postsService.getPosts();
-    }
+  ngOnInit() {
+    this.postsService.getPosts();
+  }
 }
